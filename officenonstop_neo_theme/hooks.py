@@ -11,3 +11,4 @@ app_include_css = "/assets/officenonstop_neo_theme/css/theme.css"
 app_include_js = "/assets/officenonstop_neo_theme/js/theme-switcher.js"
 
 boot_session = "officenonstop_neo_theme.api.inject_theme_scheme"
+after_install = "officenonstop_neo_theme.install.after_install"
