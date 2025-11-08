@@ -18,14 +18,15 @@ def get_theme_scheme():
     return frappe.db.get_value("User", user, "officenonstop_neo_theme_scheme") or "light"
 
 def inject_theme_scheme(bootinfo):
-    """Inject user theme scheme into frappe bootinfo with column safety."""
+    """Inject user theme scheme into frappe bootinfo safely, creating column if missing."""
     user = frappe.session.user
 
-    # Safety check: create column if missing
+    # Check if column exists
     if not frappe.db.has_column("User", "officenonstop_neo_theme_scheme"):
-        frappe.db.add_column("User", "officenonstop_neo_theme_scheme", "Data")
+        # Add column manually via SQL (since frappe.db.add_column is deprecated)
+        frappe.db.sql("ALTER TABLE `tabUser` ADD COLUMN `officenonstop_neo_theme_scheme` VARCHAR(140)")
         frappe.db.commit()
 
-    # Get scheme or fallback
+    # Get user's current scheme, or default to light
     scheme = frappe.db.get_value("User", user, "officenonstop_neo_theme_scheme") or "light"
     bootinfo.officenonstop_neo_theme_scheme = scheme
