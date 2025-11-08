@@ -1,7 +1,7 @@
 import frappe
 
 def after_install():
-    """Automatically add missing column to User for theme persistence."""
+    """Ensure the User table has the theme column on installation."""
     if not frappe.db.has_column("User", "officenonstop_neo_theme_scheme"):
-        frappe.db.add_column("User", "officenonstop_neo_theme_scheme", "Data")
+        frappe.db.sql("ALTER TABLE `tabUser` ADD COLUMN `officenonstop_neo_theme_scheme` VARCHAR(140)")
         frappe.db.commit()
